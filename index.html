@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/yDate.js" ></script>
+	</head>
+	<script>
+		window.onload = function() {
+			var canlender = document.getElementsByClassName("Canlender");
+			var getdate = new DateControl();
+			getdate.init({
+				"Canlender": canlender[0]
+			});
+
+		}
+	</script>
+
+	<body>
+		<div class="Canlender">
+		</div>
+	</body>
+
+</html>
