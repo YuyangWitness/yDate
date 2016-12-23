@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<!--
+	作者：jxndyy2014@163.com
+	时间：2016-12-23
+	描述：可修改样式日历插件Demo，Demo部分样式和DOM基于MUI和JQuery，用户可自行修改
+-->
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="js/mui.min.js" ></script>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<script type="text/javascript" src="js/yDate2.js"></script>
+		<style>
+		    #CalenderTable{
+		    	width: 100%;
+		    	text-align: center;
+		    }
+			#CalenderTable td {
+				padding: 10px;
+				border: 1px solid #ccc;
+			}
+			#CalenderTable thead{
+				font-size: 13px;
+				color: #8F8F94;
+			}
+			#CalenderTable thead .week{
+				color: #007AFF;
+				
+			}
+			#CalenderTable .week{
+				
+				background:#DDDDDD;
+			}
+			#CalenderTable .now{
+				background:#DDDDDD ;
+				box-shadow: inset 0px 0px 1px #000000 ;
+				-moz-box-shadow: inset 0px 0px 1px #000000 ; 
+				-webkit-box-shadow: inset 0px 0px 1px #000000 ;
+				border: 0;
+			}
+			
+			.otherMonth{
+				color:#999999;
+			}
+			
+			#headTitle {
+				width: 100%;
+				text-align: center;
+			}
+			
+			#title {
+				color: #000000;
+				font-size: 20px;
+			}
+			
+			
+		</style>
+		<script>
+			window.onload = function() {
+
+				var canlender = document.getElementById("CalenderTable");
+				var tBody = canlender.getElementsByTagName("tbody");
+				var prev = document.getElementById("prev");
+				var next = document.getElementById("next");
+				var getdate = new DateControl();
+				getdate.init({
+					"tBody": tBody
+				});
+           //APP点击事件（基于MUI），必须添加MUI的JS文件
+//          document.getElementById("after").addEventListener("tap",function(){
+//            	getdate.next();
+//           });
+//            document.getElementById("prev").addEventListener("tap",function(){
+//            	getdate.prev();
+//            })
+				document.getElementById("after").onclick = function() { 
+					getdate.next();
+				}
+
+				document.getElementById("prev").onclick = function() {
+					getdate.prev();
+				}
+				 
+				//APP点击事件（基于MUI），必须添加MUI的JS文件
+//				$("#CalenderTable").on("tap",".nowMonth",function(){
+//					$("#CalenderTable .now").removeClass("now");
+//					$(this).addClass("now");
+//				})
+				$("#CalenderTable").on("click",".nowMonth",function(){
+					$("#CalenderTable .now").removeClass("now");
+					$(this).addClass("now");
+				})
+
+			}
+		</script>
+	</head>
+
+	<body>
+		
+		<div class="mui-content">
+			<p id="headTitle">
+				<a class="mui-icon mui-icon-back mui-pull-left" id="prev"></a><span id="title">title:</span>
+				<a class="mui-icon mui-icon-forward mui-pull-right" id="after"></a>
+			</p>
+			<table id="CalenderTable">
+				<thead>
+					<tr>
+						<td class="week">周日</td>
+						<td>周一</td>
+						<td>周二</td>
+						<td>周三</td>
+						<td>周四</td>
+						<td>周五</td>
+						<td class="week">周六</td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+	</body>
+
+</html>

@@ -1,12 +1,13 @@
 /*
  *日历插件
- * version 1.1
- * 2016.12.22
+ * version 2.1
+ * 2016.12.23
  * by Claire
  * jxndyy2014@163.com
  * 
- * 
+ * 改变功能：可自行修改日历样式
  * */
+
 function DateControl() {
 	this.setting = {
 		"Canlender": null,
@@ -23,24 +24,6 @@ function DateControl() {
 			this.setting[i] = opt[i];
 		}
 
-		//alert("aaa");						
-		this.setting.Canlender.innerHTML = '<input id="prev" value="上个月" type="button" /><input id="next" value="下个月" type="button" />' +
-			'<p id="title">title: </p><table id="CalenderTable"><thead>' +
-			'<tr><td>周日</td><td>周一</td><td>周二</td><td>周三</td><td>周四</td>' +
-			'<td>周五</td><td>周六</td></tr> </thead><tbody></tbody></table>';
-
-		var canlender = document.getElementById("CalenderTable");
-		this.setting.tBody = canlender.getElementsByTagName("tbody");
-		//alert(canlender);
-		this.prevBtn = document.getElementById("prev");
-		this.nextBtn = document.getElementById("next");
-		var _this = this;
-		this.setEvent("click", this.prevBtn, function() {
-			_this.prev();
-		});
-		this.setEvent("click", this.nextBtn, function() {
-			_this.next();
-		})
 		this.getDate();
 	}
 
@@ -81,8 +64,10 @@ function DateControl() {
 		var month = this.setting.nowDay.getMonth();
 		var year = this.setting.nowDay.getFullYear();
 		var week = this.setting.nowDay.getDay();
+		var nowDate = new Date();
 		var monthAllDay = new Date(year, month + 1, 0);
 		var monthStart = new Date(year, month, 1);
+		var isOtherMonth = false;
 		//六列信息自动增长
 		for(var j = 0; j < 5; j++) { //日历每个界面总共有6行
 			//一行信息自动增长
@@ -91,12 +76,49 @@ function DateControl() {
 			var flage = "";
 			//console.log(getDay)
 			for(var i = 0; i < 7; i++) { //日历每个界面总共有七列
-				if(this.setting.getDayFlage < monthStart.getDay()) {
-					innerHtml = '<td>' + new Date(year, month, this.setting.getDayFlage - monthStart.getDay() + 1).getDate() + '</td>';
+				if(this.setting.getDayFlage < monthStart.getDay()) {//判断是否上个月
+					if(i==0 || i==6){//是否为周末
+						innerHtml = '<td class="week otherMonth">' + new Date(year, month, this.setting.getDayFlage - monthStart.getDay() + 1).getDate() + '</td>';
+					}else{
+					innerHtml = '<td class="otherMonth">' + new Date(year, month, this.setting.getDayFlage - monthStart.getDay() + 1).getDate() + '</td>';						
+					}
+					
 					flage = flage + innerHtml;
 					this.setting.getDayFlage++;
+					
 				} else {
-					innerHtml = '<td>' + this.setting.day + '</td>';
+					
+					if(i==0 || i==6 ){//是周末
+						if(isOtherMonth){//判断是否为本月
+							
+							innerHtml = '<td class="week otherMonth">' + this.setting.day + '</td>';
+						
+						}else{
+							
+							if(this.setting.day == nowDate.getDate() && nowDate.getMonth()==month){//判断是否为当天
+								innerHtml = '<td class="week now nowMonth">' + this.setting.day + '</td>';
+							}else{
+								innerHtml = '<td class="week nowMonth">' + this.setting.day + '</td>';
+							}
+							
+						}
+						
+					}else{//非周末
+						
+						if(isOtherMonth){//判断是否非本月
+							innerHtml = '<td class="otherMonth">' + this.setting.day + '</td>';
+						}else{
+							
+							if(this.setting.day == nowDate.getDate()&& nowDate.getMonth()==month){//判断是否为当天
+								innerHtml = '<td class="now nowMonth">' + this.setting.day + '</td>';
+							}else{
+								innerHtml = '<td class="nowMonth">' + this.setting.day + '</td>';
+							}
+							
+						}
+											
+					}
+					
 
 					flage = flage + innerHtml;
 
@@ -105,6 +127,7 @@ function DateControl() {
 						this.setting.day = 1;
 						month++;
 						monthAllDay = new Date(year, month + 1, 0);
+						isOtherMonth = true;
 						//console.log(this.setting.StartDay);
 
 					}
