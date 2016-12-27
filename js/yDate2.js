@@ -10,7 +10,6 @@
 
 function DateControl() {
 	this.setting = {
-		"Canlender": null,
 		"tBody": null,
 		"nowDay": new Date(),
 		"getDayFlage": 0,
