@@ -8,55 +8,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
-		<script type="text/javascript" src="js/mui.min.js" ></script>
-		<link rel="stylesheet" href="css/mui.min.css" />
-		<script type="text/javascript" src="js/yDate2.js"></script>
-		<style>
-		    #CalenderTable{
-		    	width: 100%;
-		    	text-align: center;
-		    }
-			#CalenderTable td {
-				padding: 10px;
-				border: 1px solid #ccc;
-			}
-			#CalenderTable thead{
-				font-size: 13px;
-				color: #8F8F94;
-			}
-			#CalenderTable thead .week{
-				color: #007AFF;
-				
-			}
-			#CalenderTable .week{
-				
-				background:#DDDDDD;
-			}
-			#CalenderTable .now{
-				background:#DDDDDD ;
-				box-shadow: inset 0px 0px 1px #000000 ;
-				-moz-box-shadow: inset 0px 0px 1px #000000 ; 
-				-webkit-box-shadow: inset 0px 0px 1px #000000 ;
-				border: 0;
-			}
-			
-			.otherMonth{
-				color:#999999;
-			}
-			
-			#headTitle {
-				width: 100%;
-				text-align: center;
-			}
-			
-			#title {
-				color: #000000;
-				font-size: 20px;
-			}
-			
-			
-		</style>
+		<link rel="stylesheet" href="css/yDate.css" />
+		<script type="text/javascript" src="js/yDate2.js"></script>		
 		<script>
 			window.onload = function() {
 
@@ -88,11 +41,7 @@
 //					$("#CalenderTable .now").removeClass("now");
 //					$(this).addClass("now");
 //				})
-				$("#CalenderTable").on("click",".nowMonth",function(){
-					$("#CalenderTable .now").removeClass("now");
-					$(this).addClass("now");
-				})
-
+			
 			}
 		</script>
 	</head>
@@ -101,8 +50,9 @@
 		
 		<div class="mui-content">
 			<p id="headTitle">
-				<a class="mui-icon mui-icon-back mui-pull-left" id="prev"></a><span id="title">title:</span>
-				<a class="mui-icon mui-icon-forward mui-pull-right" id="after"></a>
+				<button id="prev">上个月</button>
+				<span id="title">title:</span>
+				<button id="after">下个月</button>
 			</p>
 			<table id="CalenderTable">
 				<thead>

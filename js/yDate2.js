@@ -15,16 +15,15 @@ function DateControl() {
 		"nowDay": new Date(),
 		"getDayFlage": 0,
 		"day": 1,
-		"prevBtn": null,
-		"nextBtn": null,
 	}
 
 	DateControl.prototype.init = function(opt) {
 		for(var i in opt) {
 			this.setting[i] = opt[i];
 		}
-
+       
 		this.getDate();
+		 this.ClickDate();
 	}
 
 	DateControl.prototype.setEvent = function(Event, Obj, fn) {
@@ -48,6 +47,7 @@ function DateControl() {
 		this.setting.day = 1;
 		this.setting.nowDay = new Date(this.setting.nowDay.getFullYear(), this.setting.nowDay.getMonth() - 1, this.setting.nowDay.getDate());
 		this.getDate();
+		this.ClickDate();
 	}
 	DateControl.prototype.next = function() {
 		this.deleteAllTr();
@@ -55,6 +55,44 @@ function DateControl() {
 		this.setting.day = 1;
 		this.setting.nowDay = new Date(this.setting.nowDay.getFullYear(), this.setting.nowDay.getMonth() + 1, this.setting.nowDay.getDate());
 		this.getDate();
+		this.ClickDate();
+	}
+	
+	DateControl.prototype.ClickDate = function(){
+		var nowMonth = document.getElementById("CalenderTable").getElementsByClassName("nowMonth");
+		var i = 0,
+		    nowLenth = nowMonth.length,
+		    _this = this;
+		for (;i<nowLenth;i++) {
+			this.setEvent("click",nowMonth[i],function(){							
+				_this.removeAllNow();
+				var oldClassName = this.className;
+				this.className = 'now ' + oldClassName;
+			});
+		
+		}
+	}
+	DateControl.prototype.removeAllNow = function(){
+		var now = document.getElementById("CalenderTable").getElementsByClassName("now");
+		var i = 0,
+		    nowLenth = now.length;
+		
+		    for (;i<nowLenth;i++) {
+		    	   var AllClass = now[i].className;
+		    	   var AllClassArry = AllClass.split(" ");    	  
+		    	    // AllClassArry.remove("now")
+		    	   var NewClass = "";
+               var j = 0,
+                   AllClassArrylength = AllClassArry.length;
+                   for (;j<AllClassArrylength;j++) {
+                   	  if(AllClassArry[j] !== "now")
+                   	   NewClass = NewClass + " " +AllClassArry[j];
+                   }
+		    	  
+		    	   //console.log(NewClass);
+		    	   now[i].className = NewClass;
+		    }
+		    
 	}
 
 	DateControl.prototype.getDate = function() {
