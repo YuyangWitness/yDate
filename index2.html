@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-<!--
+	<!--
 	作者：jxndyy2014@163.com
 	时间：2016-12-23
 	描述：可修改样式日历插件Demo，Demo部分样式和DOM基于MUI和JQuery，用户可自行修改
 -->
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="css/yDate.css" />
-		<script type="text/javascript" src="js/yDate2.js"></script>		
+		<script type="text/javascript" src="js/yDate2.js"></script>
 		<script>
 			window.onload = function() {
 
@@ -18,37 +19,43 @@
 				var prev = document.getElementById("prev");
 				var next = document.getElementById("next");
 				var getdate = new DateControl();
+				//日期必须是排序的传入，可以减少内部循环事件
+				var getDateFromSql = ["2017-1-3", "2017-1-3", "2017-2-5", "2017-2-8"];
+				var i = 0,
+					getDateFromSqlLen = getDateFromSql.length;
+				var YearArray = new Array();
+				var MonthArray = new Array();
+				var DayArray = new Array();
+				for(; i < getDateFromSqlLen; i++) {
+					var tempArray = getDateFromSql[i].split("-");
+					YearArray.push(tempArray[0]);
+					MonthArray.push(tempArray[1]);
+					DayArray.push(tempArray[2]);
+				}
 				getdate.init({
-					"tBody": tBody
+				"tBody": tBody,
+				"YearArray": YearArray,
+				"MonthArray": MonthArray,
+				"DayArray": DayArray
 				});
-           //APP点击事件（基于MUI），必须添加MUI的JS文件
-//          document.getElementById("after").addEventListener("tap",function(){
-//            	getdate.next();
-//           });
-//            document.getElementById("prev").addEventListener("tap",function(){
-//            	getdate.prev();
-//            })
-				document.getElementById("after").onclick = function() { 
+
+				document.getElementById("after").onclick = function() {
 					getdate.next();
 				}
 
 				document.getElementById("prev").onclick = function() {
 					getdate.prev();
 				}
-				 
-				//APP点击事件（基于MUI），必须添加MUI的JS文件
-//				$("#CalenderTable").on("tap",".nowMonth",function(){
-//					$("#CalenderTable .now").removeClass("now");
-//					$(this).addClass("now");
-//				})
+				
 			
+				
+
 			}
 		</script>
 	</head>
 
 	<body>
-		
-		<div class="mui-content">
+		<div id="date">
 			<p id="headTitle">
 				<button id="prev">上个月</button>
 				<span id="title">title:</span>
@@ -69,8 +76,12 @@
 				<tbody>
 				</tbody>
 			</table>
-		</div>
-
+        </div>
+        <div id="addDaily">
+        	   <p id="dailyDate">日程日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="NowDay"></span></p>
+        	   <textarea id="Daily"></textarea>
+        	   <input type="button" value="提交" id="setDaily" />
+        </div>
 	</body>
 
 </html>
