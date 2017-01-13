@@ -10,48 +10,8 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="css/yDate.css" />
+		<script type="text/javascript" src="js/daily.js"></script>
 		<script type="text/javascript" src="js/yDate2.js"></script>
-		<script>
-			window.onload = function() {
-
-				var canlender = document.getElementById("CalenderTable");
-				var tBody = canlender.getElementsByTagName("tbody");
-				var prev = document.getElementById("prev");
-				var next = document.getElementById("next");
-				var getdate = new DateControl();
-				//日期必须是排序的传入，可以减少内部循环事件
-				var getDateFromSql = ["2017-1-3", "2017-1-3", "2017-2-5", "2017-2-8"];
-				var i = 0,
-					getDateFromSqlLen = getDateFromSql.length;
-				var YearArray = new Array();
-				var MonthArray = new Array();
-				var DayArray = new Array();
-				for(; i < getDateFromSqlLen; i++) {
-					var tempArray = getDateFromSql[i].split("-");
-					YearArray.push(tempArray[0]);
-					MonthArray.push(tempArray[1]);
-					DayArray.push(tempArray[2]);
-				}
-				getdate.init({
-				"tBody": tBody,
-				"YearArray": YearArray,
-				"MonthArray": MonthArray,
-				"DayArray": DayArray
-				});
-
-				document.getElementById("after").onclick = function() {
-					getdate.next();
-				}
-
-				document.getElementById("prev").onclick = function() {
-					getdate.prev();
-				}
-				
-			
-				
-
-			}
-		</script>
 	</head>
 
 	<body>
@@ -76,12 +36,115 @@
 				<tbody>
 				</tbody>
 			</table>
-        </div>
-        <div id="addDaily">
-        	   <p id="dailyDate">日程日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="NowDay"></span></p>
-        	   <textarea id="Daily"></textarea>
-        	   <input type="button" value="提交" id="setDaily" />
-        </div>
+		</div>
+		<div id="addDaily">
+			<p id="dailyDate">日程日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="NowDay"></span></p>
+			<textarea id="Daily"></textarea>
+			<input type="button" value="提交" id="setDaily" />
+		</div>
+		<ul id="DailyFromDate">
+			<h1 id="DailyH1">2017-1-12</h1>
+		</ul>
 	</body>
+	<script>
+		window.onload = function() {
+
+			var prev = document.getElementById("prev");
+			var next = document.getElementById("next");
+			var Nowaday = new Date();
+			var NowadayStr = Nowaday.getFullYear() + "-" + (Nowaday.getMonth() + 1) + "-" + Nowaday.getDate();
+			var setDaily = document.getElementById("setDaily");
+			var DailyFromDate = document.getElementById("DailyFromDate");
+			var getThisMonth = "%" + Nowaday.getFullYear() + "-" + (Nowaday.getMonth() + 1) + "%";
+			var getdate = new DateControl();
+
+			//日期必须是排序的传入，可以减少内部循环事件
+			createTable();
+			selectDaily(getThisMonth, getdate);
+            
+			document.getElementById("prev").onclick = function() {
+				var getPrevMonth = new Date(getdate.setting.nowDay.getFullYear(), getdate.setting.nowDay.getMonth() - 1, getdate.setting.nowDay.getDate());
+				var str = "%" + getPrevMonth.getFullYear() + "-" + (getPrevMonth.getMonth() + 1) + "%";
+				var index = 0;
+				selectChangeMonth(str, getdate, index);
+				
+			}
+			document.getElementById("after").onclick = function() {
+				var getPrevMonth = new Date(getdate.setting.nowDay.getFullYear(), getdate.setting.nowDay.getMonth() + 1, getdate.setting.nowDay.getDate());
+				var str = "%" + getPrevMonth.getFullYear() + "-" + (getPrevMonth.getMonth() + 1) + "%";
+				var index = 1;
+				selectChangeMonth(str, getdate, index);
+			}
+
+			setDaily.onclick = function() {
+				var Daily = document.getElementById("Daily");
+				var NowDay = document.getElementById("NowDay");
+				if(NowDay.textContent != "" && Daily.value != "") {
+					var daily = {
+						dailyDate: NowDay.textContent,
+						dailyVal: Daily.value
+					}
+					createTable();
+					InsertDaily(daily);
+					InsertIntoDaily(Daily.value);
+					var getNow = document.getElementsByClassName("now")[0];
+					var haveDay = getNow.getElementsByClassName("haveDay");
+					//判断是否有小红点，假如是已有事件，就不用再添加样式了
+					if(haveDay.length == 0) {
+						var NowContent = getNow.textContent;
+						var NowInner = NowContent + '<span class="haveDay"></span>';
+						getNow.innerHTML = NowInner;
+					}
+
+				} else {
+					alert("日志信息为空");
+				}
+				Daily.value = "";
+
+			}
+
+			//使用js原生实现事件委托
+			DailyFromDate.onclick = function(e) {
+				ev = e || event;
+				var src = e.srcElement || e.target;
+				//src可能是li和li的子元素span
+				if(src && (src.nodeName.toLowerCase() === "li" || src.nodeName.toLowerCase() === "span")) {
+					//假如是li，直接带入src和获取的span
+					if(src.nodeName.toLowerCase() === "li") {
+						var Span = src.getElementsByTagName("span")[0];
+						animateDaliy(src, Span)
+
+					}
+					//假如是span,就需要通过parentNode来获取父元素li，span可以直接带入
+					if(src.nodeName.toLowerCase() === "span") {
+						var elem = src.parentNode;
+						animateDaliy(elem, src);
+					}
+
+				}
+
+			}
+
+			/*
+			 单独封装事件委托逻辑代码
+			 * */
+			function animateDaliy(elem, Span) {
+				if(elem.style.overflow === "visible") {
+					elem.style.textOverflow = 'ellipsis';
+					elem.style.whiteSpace = "nowrap";
+					elem.style.overflow = "hidden";
+					elem.style.height = "20px"
+				} else {
+					elem.style.textOverflow = 'inherit';
+					elem.style.whiteSpace = "inherit";
+					elem.style.overflow = "visible";
+					if(Span.offsetHeight > elem.offsetHeight) {
+						elem.style.height = Span.offsetHeight + "px"
+					}
+				}
+			}
+
+		}
+	</script>
 
 </html>

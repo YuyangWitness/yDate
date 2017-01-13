@@ -44,7 +44,10 @@ function DateControl() {
 		}
 	}
 
-	DateControl.prototype.prev = function() {
+	DateControl.prototype.prev = function(opt) {
+		for(var i in opt) {
+			this.setting[i] = opt[i];
+		}
 		this.deleteAllTr();
 		this.setting.getDayFlage = 0;
 		this.setting.day = 1;
@@ -53,7 +56,10 @@ function DateControl() {
 		this.getDate();
 		this.ClickDate();
 	}
-	DateControl.prototype.next = function() {
+	DateControl.prototype.next = function(opt) {
+		for(var i in opt) {
+			this.setting[i] = opt[i];
+		}
 		this.deleteAllTr();
 		this.setting.getDayFlage = 0;
 		this.setting.day = 1;
@@ -61,6 +67,7 @@ function DateControl() {
 		this.setting.nowDay = new Date(this.setting.nowDay.getFullYear(), this.setting.nowDay.getMonth() + 1, this.setting.nowDay.getDate());
 		this.getDate();
 		this.ClickDate();
+		
 	}
 
 	DateControl.prototype.ClickDate = function() {
@@ -73,24 +80,33 @@ function DateControl() {
 				_this.removeAllNow();
 				var oldClassName = this.className;
 				this.className = 'now ' + oldClassName;
-
-				_this.ShowDaily();
 				_this.changeNowDate();
+				_this.getDaily();
 			});
 
 		}
-		this.ShowDaily();
 		this.changeNowDate();
+		this.getDaily()
 
+	}
+	DateControl.prototype.getDaily = function() {
+		var NowDayDate = document.getElementsByClassName("now");
+		if(NowDayDate.length !== 0) {
+			selectDailyBydate(this.setting.nowDay.getFullYear() + "-" + (this.setting.nowDay.getMonth() + 1) + "-" + NowDayDate[0].textContent);
+		}
 	}
 	DateControl.prototype.changeNowDate = function() {
 		var DateSpan = document.getElementById("NowDay");
+		var DailyH1 = document.getElementById("DailyH1");
 		var NowDay = this.setting.nowDay;
 		var NowDayYear = NowDay.getFullYear();
 		var NowDayMonth = NowDay.getMonth() + 1;
-		var NowDayDate = document.getElementsByClassName("now")[0].textContent;
-		
-		DateSpan.innerText = NowDayYear + "-" + NowDayMonth + "-" + NowDayDate;
+		var NowDayDate = document.getElementsByClassName("now");
+		if(NowDayDate.length !== 0) {
+			DailyH1.innerHTML = NowDayYear + "-" + NowDayMonth + "-" + NowDayDate[0].textContent;
+			DateSpan.innerText = NowDayYear + "-" + NowDayMonth + "-" + NowDayDate[0].textContent;
+		}
+
 	}
 	DateControl.prototype.removeAllNow = function() {
 		var now = document.getElementById("CalenderTable").getElementsByClassName("now");
@@ -114,24 +130,6 @@ function DateControl() {
 		}
 
 	}
-	DateControl.prototype.ShowDaily = function() {
-		//事件信息加载
-		var activeDate = document.getElementsByClassName("now")[0];
-		var AllDaily = document.getElementsByClassName("Allhave");
-
-		if(activeDate != null) {
-			var getId = activeDate.textContent;
-
-			var oDiv = document.getElementById(getId);
-			for(var i = 0; i < AllDaily.length; i++) {
-				AllDaily[i].style.display = 'none';
-			}
-			if(oDiv != null) {
-
-				oDiv.style.display = 'block';
-			}
-		}
-	}
 
 	//获取有信息的日期，进行样式的增加
 	DateControl.prototype.getHaveDay = function(haveInnerHtml, InnerHtml, haveDate) {
@@ -144,22 +142,8 @@ function DateControl() {
 			if(this.setting.day.toString() === haveDate[x]) {
 				getHtml = haveInnerHtml;
 
-				var newElem = document.createElement("div");
-				newElem.id = this.setting.day.toString();
-				newElem.className = "Allhave";
-				newElem.style.display = 'none';
-				//selectButton.previousElementSibling.insertAdjacentElement("afterend", newElem);
-
-				var newElemP = document.createElement("p");
-				newElemP.textContent = "这是一个客户拜访" + x
-				newElem.appendChild(newElemP);
-
-				//newElem.innerHTML = "这是一个客户拜访" + x;
-				//daily.appendChild(newElem);
 				while(haveDate[++x] === this.setting.day.toString()) {
-					var newElemP = document.createElement("p");
-					newElemP.textContent = "这是一个客户拜访" + x
-					newElem.appendChild(newElemP);
+
 				}
 				//下次循环的时候从haveDateIndex开始循环，减少循环次数
 				this.setting.haveDateIndex = x - 1;
