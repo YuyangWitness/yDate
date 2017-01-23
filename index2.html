@@ -15,6 +15,9 @@
 	</head>
 
 	<body>
+		<head>
+			<h3 id="todayTime"></h3>
+		</head>
 		<div id="date">
 			<p id="headTitle">
 				<button id="prev">上个月</button>
@@ -57,6 +60,15 @@
 			var DailyFromDate = document.getElementById("DailyFromDate");
 			var getThisMonth = "%" + Nowaday.getFullYear() + "-" + (Nowaday.getMonth() + 1) + "%";
 			var getdate = new DateControl();
+			
+			//传入今天的时间
+			var todayTime = document.getElementById("todayTime");
+			var weekStr = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+			if(todayTime.textContent != undefined){
+				todayTime.textContent = weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月"; //支持ie>8 和 其他浏览器
+			}else{
+				todayTime.innerText = weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月";   //支持ie<9
+			}
 
 			//日期必须是排序的传入，可以减少内部循环事件
 			createTable();

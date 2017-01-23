@@ -83,8 +83,9 @@ function selectDaily(dailyDate, getdate) {
 					for(; i < len; i++) {
 						getDateFromSql.push(result.rows[i].dailyDate);
 					}
-					showStartDaily(getDateFromSql, getdate);
+					
 				}
+				showStartDaily(getDateFromSql, getdate);
 
 			},
 			function(tx, error) {
