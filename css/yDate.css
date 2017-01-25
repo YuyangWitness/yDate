@@ -1,5 +1,13 @@
+header{
+	width: 100%;
+	border-bottom: 1px solid #B0E2FF;
+	text-align: center;
+}
+header h3{
+	width: 40%;
+}
 #date {
-	width: 50%;
+	width: 100%;
 	float: left;
 }
 
@@ -13,13 +21,14 @@
 }
 
 #CalenderTable {
-	width: 100%;
+	width: 70%;
+	margin: 0 auto;
 	text-align: center;
 }
 
 #CalenderTable td {
 	padding: 10px;
-	border: 1px solid #ccc;
+	border: 1px solid #CAE1FF;
 	position: relative;
 }
 
@@ -33,11 +42,11 @@
 }
 
 #CalenderTable .week {
-	background: #DDDDDD;
+	background: #B0E2FF;
 }
 
 #CalenderTable .now {
-	background: #DDDDDD;
+	background: #B0E2FF;
 	box-shadow: inset 0px 0px 1px #000000;
 	-moz-box-shadow: inset 0px 0px 1px #000000;
 	-webkit-box-shadow: inset 0px 0px 1px #000000;
@@ -53,8 +62,14 @@
 	text-align: center;
 }
 
-#headTitle button {
+#headTitle span {
 	margin: 0 5%;
+}
+
+#headTitle .selectMonth{
+
+	font-size: 20px;
+	color: #9FB6CD;
 }
 
 #title {
@@ -98,19 +113,21 @@
 }
 
 #DailyFromDate {
-	width: 100%;
+	margin-top: 50px;
+	width: 97%;
 	float: left;
 }
 
 #DailyFromDate h1 {
+	width: 60%;
 	text-align: center;
-	color: cornflowerblue;
+	margin: 0 auto;
 }
 
 #DailyFromDate .daily {
 	width: 50%;
 	height: 20px;
-	background: cornflowerblue;
+	background: #B0E2FF;
 	border: 1px solid floralwhite;
 	margin: 10px auto;
 	text-overflow: ellipsis;
@@ -118,5 +135,13 @@
 	overflow: hidden;
 	padding: 10px;
 	color: white
+}
+
+#DailyFromDate .noMessage{
+    list-style: none;
+    text-align: center;
+    margin-top: 100px;
+    color: #9FB6CD;
+
 }
 

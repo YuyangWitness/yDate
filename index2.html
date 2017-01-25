@@ -12,17 +12,18 @@
 		<link rel="stylesheet" href="css/yDate.css" />
 		<script type="text/javascript" src="js/daily.js"></script>
 		<script type="text/javascript" src="js/yDate2.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
 	</head>
 
 	<body>
-		<head>
+		<header>
 			<h3 id="todayTime"></h3>
-		</head>
+		</header>
 		<div id="date">
 			<p id="headTitle">
-				<button id="prev">上个月</button>
+				<input type="button" id="prev" class="selectMonth" value="<">
 				<span id="title">title:</span>
-				<button id="after">下个月</button>
+				<input type="button" id="after" class="selectMonth" value=">">
 			</p>
 			<table id="CalenderTable">
 				<thead>
@@ -40,11 +41,11 @@
 				</tbody>
 			</table>
 		</div>
-		<div id="addDaily">
+		<!-- <div id="addDaily">
 			<p id="dailyDate">日程日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="NowDay"></span></p>
 			<textarea id="Daily"></textarea>
 			<input type="button" value="提交" id="setDaily" />
-		</div>
+		</div> -->
 		<ul id="DailyFromDate">
 			<h1 id="DailyH1">2017-1-12</h1>
 		</ul>
@@ -56,7 +57,7 @@
 			var next = document.getElementById("next");
 			var Nowaday = new Date();
 			var NowadayStr = Nowaday.getFullYear() + "-" + (Nowaday.getMonth() + 1) + "-" + Nowaday.getDate();
-			var setDaily = document.getElementById("setDaily");
+			//var setDaily = document.getElementById("setDaily");
 			var DailyFromDate = document.getElementById("DailyFromDate");
 			var getThisMonth = "%" + Nowaday.getFullYear() + "-" + (Nowaday.getMonth() + 1) + "%";
 			var getdate = new DateControl();
@@ -65,9 +66,9 @@
 			var todayTime = document.getElementById("todayTime");
 			var weekStr = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 			if(todayTime.textContent != undefined){
-				todayTime.textContent = weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月"; //支持ie>8 和 其他浏览器
+				todayTime.textContent = "today is " + weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月" + Nowaday.getDate() + "日"; //支持ie>8 和 其他浏览器
 			}else{
-				todayTime.innerText = weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月";   //支持ie<9
+				todayTime.innerText = "today is " + weekStr[Nowaday.getDay()] + ", " + (Nowaday.getMonth()+1) + "月";   //支持ie<9
 			}
 
 			//日期必须是排序的传入，可以减少内部循环事件
@@ -88,7 +89,7 @@
 				selectChangeMonth(str, getdate, index);
 			}
 
-			setDaily.onclick = function() {
+			/*setDaily.onclick = function() {
 				var Daily = document.getElementById("Daily");
 				var NowDay = document.getElementById("NowDay");
 				if(NowDay.textContent != "" && Daily.value != "") {
@@ -113,7 +114,7 @@
 				}
 				Daily.value = "";
 
-			}
+			}*/
 
 			//使用js原生实现事件委托
 			DailyFromDate.onclick = function(e) {

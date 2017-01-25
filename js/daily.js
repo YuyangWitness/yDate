@@ -55,10 +55,17 @@ function selectDailyBydate(dailyDate) {
 						var oDiv = document.createElement('li');
 						var oSpan = document.createElement('span');
 						oDiv.className = 'daily';
-						oSpan.textContent = result.rows[i].dailyVal;
+						setText( oSpan, result.rows[i].dailyVal );
 						oDiv.appendChild(oSpan);
 						DailyFromDate.appendChild(oDiv);
 					}
+				}else{
+					var oLi = document.createElement('li');
+					var oH3 = document.createElement('h3');
+					oLi.className = 'noMessage';
+					setText( oH3, "无日程信息" );
+					oLi.appendChild( oH3 );
+					DailyFromDate.appendChild(oLi);
 				}
 
 			},
@@ -109,12 +116,14 @@ function selectChangeMonth(str, getdate, index){
 					for(; i < len; i++) {
 						getDateFromSql.push(result.rows[i].dailyDate);
 					}
-					if(index === 1){
+						
+				}else{
+
+				}
+				if(index === 1){
 						showNextDaily(getDateFromSql, getdate);
-					}else if(index ===0){
+				}else if(index ===0){
 						showPrevDaily(getDateFromSql, getdate);
-					}
-					
 				}
 
 			},

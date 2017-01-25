@@ -85,7 +85,7 @@ function DateControl() {
 			});
 
 		}
-		this.changeNowDate();
+		//this.changeNowDate();
 		this.getDaily()
 
 	}
@@ -95,7 +95,7 @@ function DateControl() {
 			selectDailyBydate(this.setting.nowDay.getFullYear() + "-" + (this.setting.nowDay.getMonth() + 1) + "-" + NowDayDate[0].textContent);
 		}
 	}
-	DateControl.prototype.changeNowDate = function() {
+	/*DateControl.prototype.changeNowDate = function() {
 		var DateSpan = document.getElementById("NowDay");
 		var DailyH1 = document.getElementById("DailyH1");
 		var NowDay = this.setting.nowDay;
@@ -107,7 +107,7 @@ function DateControl() {
 			DateSpan.innerText = NowDayYear + "-" + NowDayMonth + "-" + NowDayDate[0].textContent;
 		}
 
-	}
+	}*/
 	DateControl.prototype.removeAllNow = function() {
 		var now = document.getElementById("CalenderTable").getElementsByClassName("now");
 		var i = 0,
